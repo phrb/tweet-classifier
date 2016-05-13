@@ -41,21 +41,12 @@ def vectorize(data):
                                  tokenizer    = None,
                                  preprocessor = None,
                                  stop_words   = None,
-                                 max_features = 5000)
+                                 max_features = 500)
 
     features   = vectorizer.fit_transform(data).toarray()
     vocabulary = vectorizer.get_feature_names()
 
     return features, vocabulary
 
-def print_text(data):
-    for row in data:
-        print(row)
-
 data, samples = load_data()
 features, vocabulary = vectorize(samples)
-
-distribution = np.sum(features, axis = 0)
-
-for tag, count in zip(vocabulary, distribution):
-    print(count, tag)
