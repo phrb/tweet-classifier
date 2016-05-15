@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
+\usepackage{url}
 \usepackage{amssymb}
 \usepackage{booktabs}
 \usepackage{tikz}
@@ -35,14 +36,153 @@
 
 \section{Introdução} \label{sec:intro}
 
-\section{Visualizando o \textit{dataset}}
+Este relatório apresenta visualizações e algoritmos de aprendizado de máquina
+utilizados no primeiro \textit{dataset} da disciplina \textbf{MAC5832}.
+
+O \textit{dataset} consiste de um conjunto de \textit{tweets} sobre companhias
+aéreas, associado a avaliações de \textit{sentimento}.  Os algoritmos de
+aprendizado de máquina implementados foram o \textit{Perceptron} e o
+\textit{Gradient Descent}. Os dois algoritmos estão descritos nas Seções
+\ref{sec:percep} e \ref{sec:gd}.  Visualizações do \textit{dataset} são
+apresentadas na Seção \ref{sec:viz}. A Seção \ref{sec:concl} discute os
+resultados e conclui este relatório.
+
+\subsection{Estrutura de Diretórios}
+
+Os diretórios deste trabalhos estão organizados da
+seguinte forma:
+
+\paragraph{\texttt{./doc}} Contém os arquivos necessários
+para gerar este documento.
+
+\paragraph{\texttt{./data}} Contém os conjuntos de dados
+disponibilizados para treinamento e testes.
+
+\paragraph{\texttt{./src}} Contém o código implementado
+para o \textit{Perceptron} e \textit{Gradient Descent}.
+
+\section{Visualizando o \textit{dataset}} \label{sec:viz}
+
+Esta Seção apresenta alguns gráficos que ajudaram a visualizar
+o \textit{dataset} utilizado no exercício.
 
 \section{Algoritmos de Aprendizado de Máquina}
 
-\subsection{Perceptron}
+Esta Seção discute os algoritmos de aprendizado de máquina
+e suas implementações, feitas em \texttt{Python} e usando os
+módulos \texttt{nltk}, \texttt{sklearn}, \texttt{numpy},
+\texttt{csv} e \texttt{re}.
 
-\subsection{Gradient Descent}
+Utilizei o tutorial sobre \textit{Bag of
+Words}\footnote{\url{https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-1-for-beginners-bag-of-words}},
+disponibilizado na página da Tarefa \rom{1}, para gerar um \textit{vocabulário}
+com as palavras mais frequentes nos \textit{tweets} do \textit{dataset}.
 
-\section{Conclusão}
+O vocabulário foi então usado para gerar os \textit{vetores de características}
+utilizados para treinar os algoritmos e realizar as predições.
+Os vetores de características contêm um \texttt{1} na posição
+correspondente a uma determinada palavra se o \textit{tweet}
+contém aquela palavra, e um \texttt{0} caso contrário.
+
+Além disso, cada vetor de características é inicializado com
+um \texttt{1} na primeira posição, correspondente ao
+\textit{threshold} do classificador.
+
+\subsection{Perceptron} \label{sec:percep}
+
+Considere um vetor $\boldsymbol{w}$ de pesos inicializado com $N + 1$
+\texttt{1}s, onde cada peso $w_i, 0 \leq i \leq N$ corresponde a uma
+característica dos vetores de características dos \textit{tweets} do
+\textit{dataset}, e $N$ é o número de características extraídas do conjunto.
+
+A cada passo do algoritmo \textit{Perceptron}, vamos calcular a classificação
+$c_j$ de cada um dos $M$ vetores $\boldsymbol{x}_j, 0 \leq j \leq M$ de características
+usando a seguinte equação:
+
+\begin{align*}
+    c_j = step\bigg(\sum_{i = 0}^{N}{w_i\boldsymbol{x}_{j}^{i}}\bigg) = step\bigg(\boldsymbol{w}^{T}\boldsymbol{x}_j\bigg)
+\end{align*}
+
+Onde a função $step$ é dada por:
+
+\begin{align*}
+    step(y) = \begin{cases}
+        1 & \text{ se } y \geq 0 \\
+        -1 & \text{ caso contrário.}
+    \end{cases}
+\end{align*}
+
+Depois, para cada vetor $\boldsymbol{x}_j, 0 \leq j \leq M$ vamos atualizar o vetor
+$\boldsymbol{w}$ de pesos da seguinte maneira:
+
+\begin{align*}
+    \boldsymbol{w} = \boldsymbol{w} + \alpha\boldsymbol{x}_j(z_j - c_j)
+\end{align*}
+
+Aqui, $\boldsymbol{x}_j$ é um vetor de características, $\alpha$ é a
+\textit{taxa de aprendizado}, $z_j$ é a classificação correta de
+$\boldsymbol{x}_j$ e $c_j$ é a predição feita pelo algoritmo nessa iteração.
+
+A minha implementação do \textit{Perceptron} executa esse procedimento para
+todos os exemplos no conjunto de testes até que o número de exemplos
+classificados erroneamente seja menor ou igual a um limite $\mu$. Nesse
+\textit{dataset}, utilizei $\mu = 6$. Depois do treinamento do modelo, obtemos
+um vetor $\boldsymbol{w}^{*}$, que é usado para gerar as predições para cada \textit{tweet}
+contido nos dados para teste.
+
+\subsection{Gradient Descent} \label{sec:gd}
+
+Considere um vetor $\boldsymbol{w}$ de pesos inicializado
+com $N + 1$ \texttt{1}s, onde cada peso $w_i,\: 0 \leq i \leq N$
+corresponde a uma característica dos vetores de características
+dos \textit{tweets} do \textit{dataset}, e $N$ é o número
+de características extraídas do conjunto.
+
+A cada passo do algoritmo \textit{Gradient Descent}, vamos calcular a
+classificação $c_j$ de todos os vetores $\boldsymbol{x}_j,\: 0 \leq j \leq M,\: \boldsymbol{x}_j \in
+\boldsymbol{X}$ de características, onde $\boldsymbol{X}$ é a matriz
+de exemplos. Faremos a classificação usando a seguinte equação:
+
+\begin{align*}
+    \boldsymbol{C} = \boldsymbol{w}^{T}\boldsymbol{X}
+\end{align*}
+
+Aqui, $\boldsymbol{C}$ é um vetor contendo um \textit{valor real} para
+cada exemplo $\boldsymbol{x}_j \in \boldsymbol{X}$. Para obter uma predição
+da classificação de algum $\boldsymbol{x}_j$, usamos função $step(\boldsymbol{C}_j)$,
+onde $\boldsymbol{C}_j$ é $j$-ésimo valor em $\boldsymbol{C}$. A função $step$
+é, novamente, dada por:
+
+\begin{align*}
+    step(y) = \begin{cases}
+        1 & \text{ se } y \geq 0 \\
+        -1 & \text{ caso contrário.}
+    \end{cases}
+\end{align*}
+
+Depois de calcular $\boldsymbol{C}$,  atualizamos o vetor $\boldsymbol{w}$
+de pesos da seguinte maneira:
+
+\begin{align*}
+    \boldsymbol{w} = \boldsymbol{w} - \alpha \frac{1}{M} \boldsymbol{X}(\boldsymbol{C} - \boldsymbol{Z})
+\end{align*}
+
+Aqui, $\boldsymbol{X}$ é a matriz de exemplos, $\alpha$ é a \textit{taxa de
+aprendizado}, $\boldsymbol{Z}$ é a matriz com as classificações corretas de
+cada exemplo em $\boldsymbol{X}$ e $\boldsymbol{C}$ é a matriz de predições
+feita pelo algoritmo nessa iteração.
+
+A minha implementação do \textit{Gradient Descent} executa esse procedimento
+até que o número de iterações seja maior do que um limite $\rho$. Nesse
+\textit{dataset}, utilizei $\rho = 200$. Depois do treinamento do modelo,
+obtemos um vetor $\boldsymbol{w}^{*}$, que é usado para gerar as predições para cada
+\textit{tweet} contido nos dados para teste.
+
+\section{Conclusão} \label{sec:concl}
+
+A minha implementação do \textit{Perceptron} teve um desempenho melhor do que a
+implementação do \textit{Gradient Descent} mas, usando metade dos exemplos como
+treinamento e outra metade como teste, ambos os algoritmos atingiram resultados
+de por volta de $10\%$ de exemplos classificados erroneamente.
 
 \end{document}
