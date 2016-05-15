@@ -1,0 +1,293 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{tikz}
+
+\newcommand{\rom}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+\linespread{1.25}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    \textbf{\huge{Lista \rom{4} MAC4722}}\\
+
+    \vskip 1cm
+
+    Pedro Henrique Rocha Bruel
+
+    \emph{phrb@ime.usp.br}
+
+    \emph{nUSP: 7143336}
+
+    \vfill
+    \normalsize{\emph{DCC - IME\\
+    Universidade de São Paulo}\\}
+    \normalsize{São Paulo, \today}
+\end{titlepage}
+
+\section*{Exercício \rom{2}} \label{sec:ex2}
+
+Precisamos elaborar uma gramática que seja capaz
+de gerar a linguagem:
+
+\[
+    A = \{\texttt{a}^{i}\texttt{b}^{j}\texttt{c}^{k} \: | \: i=j \text{ ou } j=k \text{ onde } i,j,k \geq 0\}
+\]
+
+A gramática deve gerar cadeias para os casos $i=j$ ou $j=k$, mas não há
+restrição quanto ao caso $i=j=k$. Assim, precisamos garantir
+dois possíveis caminhos para as produções:
+
+\paragraph{Caso $i=j$:}
+\begin{enumerate}
+    \item Em toda regra onde apareça o terminal \texttt{a}, deve aparecer
+        também o terminal \texttt{b}
+    \item Apareça qualquer número $k\geq0$ de terminais \texttt{c}.
+\end{enumerate}
+
+\paragraph{Caso $j=k$:}
+\begin{enumerate}
+    \item Em toda regra onde apareça o terminal \texttt{b}, deve aparecer
+        também o terminal \texttt{c}
+    \item Apareça qualquer número $i\geq0$ de terminais \texttt{a}.
+\end{enumerate}
+
+Usarei cinco símbolos na gramáticai $G_A$, que gera a linguagem $A$:
+O símbolo inicial $S_0$ e os símbolos $S_1$, $S_2$, $S_3$ e $S_4$.
+
+\paragraph{Gramática $G_A$:}
+
+\begin{align*}
+    S_0 \rightarrow & \: S_1S_2 \: | \: S_3S_4 \\
+    S_1 \rightarrow & \: \texttt{a}S_1\texttt{b} \: | \: \varepsilon \\
+    S_2 \rightarrow & \: \texttt{c}S_2 \: | \: \varepsilon \\
+    S_3 \rightarrow & \: \texttt{a}S_3 \: | \: \varepsilon \\
+    S_4 \rightarrow & \: \texttt{b}S_4\texttt{c} \: | \: \varepsilon
+\end{align*}
+
+Os símbolos $S_1$ e $S_4$ são os responsáveis por garantir
+que o mesmo número de terminais \texttt{a} e \texttt{b} ($i=j$), ou
+\texttt{b} e \texttt{c} ($j=k$), seja gerado nas produções onde aparecem,
+respectivamente.
+Os símbolos $S_2$ e $S_3$ produzem qualquer número $k \geq 0$ de terminais
+\texttt{c} ($i=j$), ou $i \geq 0$ de terminais \texttt{a} ($j=k$),
+respectivamente.
+Nada impede que as produções geradas tenham $i=j=k, \: i,j,k \geq 0$.
+Finalmente, a separação inicial entre os pares $S_1S_2$ ou $S_3S_4$,
+feita no símbolo inicial $S_0$, cobre os dois casos.
+
+A gramática $G_A$ é ambígua, pois basta considerar a derivação
+da cadeia \texttt{abc}:
+
+\paragraph{Derivação à esquerda:}
+
+\begin{align*}
+    S_0 \implies & \: S_1S_2 \\
+    \implies & \: \texttt{a}S_1\texttt{b}S_2 \\
+    \implies & \: \texttt{ab}S_2 \\
+    \implies & \: \texttt{abc}S_2 \\
+    \implies & \: \texttt{abc}
+\end{align*}
+
+\paragraph{Derivação à direita:}
+
+\begin{align*}
+    S_0 \implies & \: S_3S_4 \\
+    \implies & \: S_3\texttt{b}S_4\texttt{c} \\
+    \implies & \: S_3\texttt{bc} \\
+    \implies & \: \texttt{a}S_3\texttt{bc} \\
+    \implies & \: \texttt{abc}
+\end{align*}
+
+\newpage
+\section*{Exercício \rom{3}} \label{sec:ex3}
+
+Considere a seguinte cadeia $c$, produzida pela gramática $G$:
+\begin{equation*}
+    \texttt{if condition then if condition then a:=1 else a:=1}
+\end{equation*}
+
+Mostrarei que $G$ é ambígua produzindo $c$ de duas maneiras
+diferentes.
+
+\paragraph{Derivação \rom{1}:}
+
+{\footnotesize
+\begin{align*}
+    \langle \text{STMT} \rangle \implies & \: \langle \text{IF-THEN} \rangle \\
+    \implies & \: \texttt{if condition then } \langle \text{STMT} \rangle \\
+    \implies & \: \texttt{if condition then } \langle \text{IF-THEN-ELSE} \rangle \\
+    \implies & \texttt{if condition then if condition then } \langle \text{STMT} \rangle\texttt{ else } \langle \text{STMT} \rangle \\
+    \implies & \texttt{if condition then if condition then } \langle \text{ASSIGN} \rangle\texttt{ else } \langle \text{STMT} \rangle \\
+    \implies & \texttt{if condition then if condition then a:=1 else } \langle \text{STMT} \rangle \\
+    \implies & \texttt{if condition then if condition then a:=1 else } \langle \text{ASSIGN} \rangle \\
+    \implies & \texttt{if condition then if condition then a:=1 else a:=1}
+\end{align*}
+}%
+
+\paragraph{Derivação \rom{2}:}
+
+{\footnotesize
+\begin{align*}
+    \langle \text{STMT} \rangle \implies & \: \langle \text{IF-THEN-ELSE} \rangle \\
+    \implies & \: \texttt{if condition then } \langle \text{STMT} \rangle\texttt{ else } \langle \text{STMT} \rangle \\
+    \implies & \: \texttt{if condition then } \langle \text{IF-THEN} \rangle\texttt{ else } \langle \text{STMT} \rangle \\
+    \implies & \: \texttt{if condition then if condition then } \langle \text{STMT} \rangle\texttt{ else } \langle \text{STMT} \rangle \\
+    \implies & \: \texttt{if condition then if condition then } \langle \text{ASSIGN} \rangle\texttt{ else } \langle \text{STMT} \rangle \\
+    \implies & \: \texttt{if condition then if condition then a:=1 else } \langle \text{STMT} \rangle \\
+    \implies & \: \texttt{if condition then if condition then a:=1 else } \langle \text{ASSIGN} \rangle \\
+    \implies & \: \texttt{if condition then if condition then a:=1 else a:=1}
+\end{align*}
+}%
+
+\newpage
+\section*{Exercício \rom{4}} \label{sec:ex4}
+
+\begin{figure}[htpb]
+    \begin{center}
+        \begin{tikzpicture}[scale=0.16]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (39.1,-4.2) circle (3);
+            \draw (39.1,-4.2) node {\scriptsize{$q_{start}$}};
+            \draw [black] (39.1,-13.9) circle (3);
+            \draw [black] (39.1,-24.6) circle (3);
+            \draw (39.1,-24.6) node {\scriptsize{$q_{loop}$}};
+            \draw [black] (39.1,-55.7) circle (3);
+            \draw (39.1,-55.7) node {\scriptsize{$q_{accept}$}};
+            \draw [black] (39.1,-55.7) circle (2.4);
+            \draw [black] (47.7,-8.3) circle (3);
+            \draw [black] (74.1,-13.9) circle (3);
+            \draw [black] (47.7,-41.6) circle (3);
+            \draw [black] (74.1,-35.5) circle (3);
+            \draw [black] (20.4,-8.3) circle (3);
+            \draw [black] (5.1,-13.9) circle (3);
+            \draw [black] (33.3,-4.2) -- (36.1,-4.2);
+            \fill [black] (36.1,-4.2) -- (35.3,-3.7) -- (35.3,-4.7);
+            \draw [black] (39.1,-7.2) -- (39.1,-10.9);
+            \fill [black] (39.1,-10.9) -- (39.6,-10.1) -- (38.6,-10.1);
+            \draw (38.6,-9.05) node [left] {\scriptsize{$\varepsilon,\mbox{ }\varepsilon\rightarrow\texttt{\$}$}};
+            \draw [black] (39.1,-16.9) -- (39.1,-21.6);
+            \fill [black] (39.1,-21.6) -- (39.6,-20.8) -- (38.6,-20.8);
+            \draw (38.6,-19.25) node [left] {\scriptsize{$\varepsilon,\mbox{ }\varepsilon\rightarrow\texttt{E}$}};
+            \draw [black] (39.1,-27.6) -- (39.1,-52.7);
+            \fill [black] (39.1,-52.7) -- (39.6,-51.9) -- (38.6,-51.9);
+            \draw (46.6,-48.15) node [left] {\scriptsize{$\varepsilon,\mbox{ }\texttt{\$}\rightarrow\varepsilon$}};
+            \draw [black] (40.5,-21.95) -- (46.3,-10.95);
+            \fill [black] (46.3,-10.95) -- (45.48,-11.43) -- (46.37,-11.89);
+            \draw (44.08,-17.61) node [right] {\scriptsize{$\varepsilon,\mbox{ }\texttt{E}\rightarrow\texttt{T}$}};
+            \draw [black] (50.228,-6.691) arc (117.65326:38.39448:17.803);
+            \fill [black] (72.44,-11.4) -- (72.34,-10.47) -- (71.55,-11.09);
+            \draw (60.49,-2.97) node [above] {\scriptsize{$\varepsilon,\mbox{ }\varepsilon\rightarrow\texttt{+}$}};
+            \draw [black] (71.23,-14.78) -- (41.97,-23.72);
+            \fill [black] (41.97,-23.72) -- (42.88,-23.97) -- (42.59,-23.01);
+            \draw (60.51,-20.63) node [below] {\scriptsize{$\varepsilon,\mbox{ }\varepsilon\rightarrow\texttt{E}$}};
+            \draw [black] (40.45,-27.28) -- (46.35,-38.92);
+            \fill [black] (46.35,-38.92) -- (46.43,-37.98) -- (45.54,-38.43);
+            \draw (44.09,-31.98) node [right] {\scriptsize{$\varepsilon,\mbox{ }\texttt{T}\rightarrow\texttt{F}$}};
+            \draw [black] (72.597,-38.092) arc (-35.09557:-118.8835:17.222);
+            \fill [black] (72.6,-38.09) -- (71.73,-38.46) -- (72.55,-39.03);
+            \draw (60.09,-47.07) node [below] {\scriptsize{$\varepsilon,\mbox{ }\varepsilon\rightarrow\times$}};
+            \draw [black] (71.24,-34.61) -- (41.96,-25.49);
+            \fill [black] (41.96,-25.49) -- (42.58,-26.21) -- (42.88,-25.25);
+            \draw (60.7,-28.71) node [above] {\scriptsize{$\varepsilon,\mbox{ }\varepsilon\rightarrow\texttt{T}$}};
+            \draw [black] (36.84,-22.63) -- (22.66,-10.27);
+            \fill [black] (22.66,-10.27) -- (22.94,-11.17) -- (23.59,-10.42);
+            \draw (25.82,-16.94) node [below] {\scriptsize{$\varepsilon,\mbox{ }\texttt{F}\rightarrow\texttt{)}$}};
+            \draw [black] (5.256,-10.92) arc (-193.28337:-306.51006:8.354);
+            \fill [black] (5.26,-10.92) -- (5.93,-10.26) -- (4.95,-10.03);
+            \draw (3,-4) node [above] {\scriptsize{$\varepsilon,\mbox{ }\varepsilon\rightarrow\texttt{E}$}};
+            \draw [black] (36.101,-24.539) arc (-92.64528:-122.29291:58.405);
+            \fill [black] (36.1,-24.54) -- (35.32,-24) -- (35.28,-25);
+            \draw (18,-23.21) node [below] {\scriptsize{$\varepsilon,\mbox{ }\varepsilon\rightarrow\texttt{(}$}};
+            \draw [black] (38.478,-27.523) arc (15.70984:-272.29016:2.25);
+            \draw (26.83,-30.39) node [below, align=left] {\scriptsize{$\varepsilon, \mbox{ }\texttt{E}\rightarrow\texttt{T}$} \\ \scriptsize{$\varepsilon, \mbox{ }\texttt{T}\rightarrow\texttt{F}$} \\ \scriptsize{$\varepsilon, \mbox{ }\texttt{F}\rightarrow\texttt{a}$} \\ \scriptsize{$\texttt{a}, \mbox{ }\texttt{a}\rightarrow\varepsilon$} \\ \scriptsize{$\texttt{(}, \mbox{ }\texttt{(}\rightarrow\varepsilon$} \\ \scriptsize{$\texttt{)}, \mbox{ }\texttt{)}\rightarrow\varepsilon$}};
+            \fill [black] (36.4,-25.88) -- (35.5,-25.62) -- (35.77,-26.58);
+        \end{tikzpicture}
+    \end{center}
+\end{figure}
+
+\newpage
+\section*{Exercício \rom{5}} \label{sec:ex5}
+
+\paragraph{1.}
+
+Repetindo a gramática à esquerda, e adicionando
+um novo símbolo e uma nova regra iniciais:
+
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{align*}
+        A \rightarrow & \: BAB \: | \: B \: | \: \varepsilon \\
+        B \rightarrow & \: \texttt{00} \: | \: \varepsilon
+    \end{align*}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{align*}
+        A_0 \rightarrow & \: A \\
+        A \rightarrow & \: BAB \: | \: B \: | \: \varepsilon \\
+        B \rightarrow & \: \texttt{00} \: | \: \varepsilon
+    \end{align*}
+\end{minipage}
+
+\paragraph{2.}
+
+Removendo a regra $B \rightarrow \varepsilon$ e adicionando
+novas regras:
+
+\begin{align*}
+    A_0 \rightarrow & \: A \\
+    A \rightarrow & \: BAB \: | \: B \: | \: \varepsilon \: | \: A \: | \: BA \: | \: AB \\
+    B \rightarrow & \: \texttt{00}
+\end{align*}
+
+\paragraph{3.}
+
+Removendo a regra $A \rightarrow \varepsilon$ e adicionando
+novas regras:
+
+\begin{align*}
+    A_0 \rightarrow & \: A \: | \: \varepsilon \\
+    A \rightarrow & \: BAB \: | \: B \: | \: A \: | \: BA \: | \: AB \: | \: BB  \\
+    B \rightarrow & \: \texttt{00}
+\end{align*}
+
+\paragraph{4.}
+
+Removendo as regras unitárias $A \rightarrow A$ e $A \rightarrow B$:
+
+\begin{align*}
+    A_0 \rightarrow & \: A \: | \: \varepsilon \\
+    A \rightarrow & \: BAB \: | \: \texttt{00} \: | \: BA \: | \: AB \: | \: BB  \\
+    B \rightarrow & \: \texttt{00}
+\end{align*}
+
+\paragraph{5.}
+
+Removendo a regra unitária $A_0 \rightarrow A$:
+
+\begin{align*}
+    A_0 \rightarrow & \: BAB \: | \: \texttt{00} \: | \: BA \: | \: AB \: | \: BB \: | \: \varepsilon \\
+    A \rightarrow & \: BAB \: | \: \texttt{00} \: | \: BA \: | \: AB \: | \: BB  \\
+    B \rightarrow & \: \texttt{00}
+\end{align*}
+
+\paragraph{6.}
+
+Finalmente, convertendo as regras para forma correta:
+
+\begin{align*}
+    A_0 \rightarrow & \: BA_1 \: | \: U_1U_1 \: | \: BA \: | \: AB \: | \: BB \: | \: \varepsilon \\
+    A \rightarrow & \: BA_1 \: | \: U_1U_1 \: | \: BA \: | \: AB \: | \: BB  \\
+    B \rightarrow & \: U_1U_1 \\
+    U_1 \rightarrow & \: \texttt{0} \\
+    A_1 \rightarrow & \: AB
+\end{align*}
+
+\end{document}
