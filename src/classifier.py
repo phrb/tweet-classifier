@@ -8,8 +8,8 @@ import re
 
 data_dir       = "../data"
 
-training_data_file = "{0}/training2.csv".format(data_dir)
-test_data_file     = "{0}/test2.csv".format(data_dir)
+training_data_file = "{0}/training.csv".format(data_dir)
+test_data_file     = "{0}/test.csv".format(data_dir)
 
 def clean_line(line):
     with_stop    = re.sub("[^a-zA-z@]", " ", line).lower().split()
@@ -110,8 +110,7 @@ def write_results(weights, test_samples, test_data):
         for sample, value in zip(test_samples, test_data):
             sample_id      = value['id']
             classification = unit_step(weights.T.dot(sample))
-            if value['airline_sentiment'] != classification:
-                output_file.write("{0},{1},{2}\n".format(classification, value['airline_sentiment'], sample_id))
+            output_file.write("{0},{1}\n".format(classification, sample_id))
 
 def write_gradient_results(weights, test_samples, test_data):
     with open("gradient_results.csv", "w+") as output_file:
@@ -121,8 +120,7 @@ def write_gradient_results(weights, test_samples, test_data):
             sample_id      = value['id']
             output         = np.dot(sample, weights)
             classification = unit_step(output)
-            if value['airline_sentiment'] != classification:
-                output_file.write("{0},{1},{2}\n".format(classification, value['airline_sentiment'], sample_id))
+            output_file.write("{0},{1}\n".format(classification, sample_id))
 
 def learn(threshold  = 6,
           stop_after = 500,
@@ -152,7 +150,7 @@ def learn(threshold  = 6,
             print("    Misclassifications: {0}".format(misclassified_samples))
 
     print("Training Complete.\nSetting up Test Data...")
-    test_data, test_samples = load_data(filename = test_data_file)
+    test_data, test_samples = load_test()
     test_features, test_vocabulary = vectorize(test_samples, vocabulary = training_vocabulary)
     print("Test Setup Complete.\nTesting...")
     write_out(weights, test_features, test_data)
