@@ -1,4 +1,4 @@
-BASE_NAME = relatorio 
+BASE_NAME = relatorio
 
 FILES     = *.tex img/*.pdf
 
