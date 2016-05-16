@@ -9,6 +9,12 @@
 \usepackage{booktabs}
 \usepackage{tikz}
 
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\graphicspath{{../src/plot/}}
+
 \newcommand{\rom}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
 
 \linespread{1.25}
@@ -65,6 +71,37 @@ para o \textit{Perceptron} e \textit{Gradient Descent}.
 
 Esta Seção apresenta alguns gráficos que ajudaram a visualizar
 o \textit{dataset} utilizado no exercício.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{airline_sentiment}
+        \caption{A gull}
+        \label{fig:gull}
+    \end{subfigure}
+    %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+    %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{airline_retweet}
+        \caption{A tiger}
+        \label{fig:tiger}
+    \end{subfigure}
+    \hfill %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+    %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{airline_good_words}
+        \caption{A mouse}
+        \label{fig:mouse}
+    \end{subfigure}
+    %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+    %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{airline_bad_words}
+        \caption{A tiger}
+        \label{fig:tiger}
+    \end{subfigure}
+    \caption{Pictures of animals}\label{fig:animals}
+\end{figure}
 
 \section{Algoritmos de Aprendizado de Máquina}
 
