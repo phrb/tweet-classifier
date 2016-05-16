@@ -83,21 +83,6 @@ considerar a companhia aérea como parte do modelo não trará muita informaçã
 pois o sentimento total é negativo para todas as companhias, e não existem
 grandes variações de uma companhia para outra, com exceção da \textit{Virgin}.
 
-A Figura~\ref{fig:ret} associa a quantidade de \textit{retweets}
-a cada companhia aérea. Novamente a \textit{Virgin} se destaca
-das demais, dessa vez por ter poucos \textit{retweets}. Ainda assim,
-não existe variação significativa na quantidade de \textit{retweets}
-de cada companhia, e decidi por não usar essa característica no modelo.
-
-As Figuras~\ref{fig:gwd} e~\ref{fig:bwd} mostram, respectivamente, os
-sentimentos totais associados a um conjunto com palavras consideradas
-\lq{}\lq{}boas\rq{}\rq{} ou positivas, e a outro com palavras consideradas
-\lq{}\lq{}ruins\rq{}\rq{} ou negativas. Com essas visualizações é possível
-concluir que usar as palavras contidas nos \textit{tweets} como características
-nos vetores de características é uma boa ideia para o modelo, pois o sentimento
-total associado ao grupo de palavras positivas também foi positivo, e o
-sentimento total associado ao grupo de palavras negativas também foi negativo.
-
 \begin{figure}[htpb]
     \centering
     \begin{subfigure}[htpb]{0.45\textwidth}
@@ -128,6 +113,21 @@ sentimento total associado ao grupo de palavras negativas também foi negativo.
     \end{subfigure}
     \caption{Visualizando o \textit{dataset}}\label{fig:viz}
 \end{figure}
+
+A Figura~\ref{fig:ret} associa a quantidade de \textit{retweets}
+a cada companhia aérea. Novamente a \textit{Virgin} se destaca
+das demais, dessa vez por ter poucos \textit{retweets}. Ainda assim,
+não existe variação significativa na quantidade de \textit{retweets}
+de cada companhia, e decidi por não usar essa característica no modelo.
+
+As Figuras~\ref{fig:gwd} e~\ref{fig:bwd} mostram, respectivamente, os
+sentimentos totais associados a um conjunto com palavras consideradas
+\lq{}\lq{}boas\rq{}\rq{} ou positivas, e a outro com palavras consideradas
+\lq{}\lq{}ruins\rq{}\rq{} ou negativas. Com essas visualizações é possível
+concluir que usar as palavras contidas nos \textit{tweets} como características
+nos vetores de características é uma boa ideia para o modelo, pois o sentimento
+total associado ao grupo de palavras positivas também foi positivo, e o
+sentimento total associado ao grupo de palavras negativas também foi negativo.
 
 \section{Algoritmos de Aprendizado de Máquina}
 
