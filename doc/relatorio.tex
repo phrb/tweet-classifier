@@ -72,35 +72,58 @@ para o \textit{Perceptron} e \textit{Gradient Descent}.
 Esta Seção apresenta alguns gráficos que ajudaram a visualizar
 o \textit{dataset} utilizado no exercício.
 
-\begin{figure}
+A Figura~\ref{fig:viz} apresenta quatro gráficos gerados a partir dos exeplos
+do \textit{dataset}. A Figura~\ref{fig:snt} associa o \textit{sentimento total}
+a cada uma das companhias aéreas.  O sentimento total é a soma dos valores de
+\texttt{airline\_sentiment} dados a cada \textit{tweet} É possível ver que
+considerar a companhia aérea como parte do modelo não trará muita informação,
+pois o sentimento total é negativo para todas as companhias, e não existem
+grandes variações de uma companhia para outra, com exceção da \textit{Virgin}.
+
+A Figura~\ref{fig:ret} associa a quantidade de \textit{retweets}
+a cada companhia aérea. Novamente a \textit{Virgin} se destaca
+das demais, dessa vez por ter poucos \textit{retweets}. Ainda assim,
+não existe variação significativa na quantidade de \textit{retweets}
+de cada companhia, e decidi por não usar essa característica no modelo.
+
+As Figuras~\ref{fig:gwd} e~\ref{fig:bwd} mostram, respectivamente, os
+sentimentos totais associados a um conjunto com palavras consideradas
+\lq{}\lq{}boas\rq{}\rq{} ou positivas, e a outro com palavras consideradas
+\lq{}\lq{}ruins\rq{}\rq{} ou negativas. Com essas visualizações é possível
+concluir que usar as palavras contidas nos \textit{tweets} como características
+nos vetores de características é uma boa ideia para o modelo, pois o sentimento
+total associado ao grupo de palavras positivas também foi positivo, e o
+sentimento total associado ao grupo de palavras negativas também foi negativo.
+
+\begin{figure}[htpb]
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[htpb]{0.45\textwidth}
         \includegraphics[width=\textwidth]{airline_sentiment}
-        \caption{A gull}
-        \label{fig:gull}
+        \caption{}
+        \label{fig:snt}
     \end{subfigure}
-    %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+    %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
     %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[htpb]{0.45\textwidth}
         \includegraphics[width=\textwidth]{airline_retweet}
-        \caption{A tiger}
-        \label{fig:tiger}
+        \caption{}
+        \label{fig:ret}
     \end{subfigure}
-    \hfill %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+    \hfill %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
     %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[htpb]{0.45\textwidth}
         \includegraphics[width=\textwidth]{airline_good_words}
-        \caption{A mouse}
-        \label{fig:mouse}
+        \caption{}
+        \label{fig:gwd}
     \end{subfigure}
-    %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+    %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
     %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[htpb]{0.45\textwidth}
         \includegraphics[width=\textwidth]{airline_bad_words}
-        \caption{A tiger}
-        \label{fig:tiger}
+        \caption{}
+        \label{fig:bwd}
     \end{subfigure}
-    \caption{Pictures of animals}\label{fig:animals}
+    \caption{Visualizando o \textit{dataset}}\label{fig:viz}
 \end{figure}
 
 \section{Algoritmos de Aprendizado de Máquina}
